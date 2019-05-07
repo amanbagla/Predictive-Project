@@ -1,0 +1,371 @@
+%++++++++++++++++++++++++++++++++++++++++
+% Don't modify this section unless you know what you're doing!
+\documentclass[letterpaper,12pt]{article}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{float}
+\usepackage{caption}
+\captionsetup[figure]{font=small}
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
+\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=blue,        % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,     % color of file links
+	urlcolor=blue         
+}
+%++++++++++++++++++++++++++++++++++++++++
+
+
+\begin{document}
+
+\title{Identification of factors influencing the population growth of individual country via predictive modeling}
+\author{Group A-Cube : Aman Bagla, Akanksha Devikar, Aman Thakkar}
+\date{}
+\maketitle
+
+\section{Introduction}
+
+Population growth over the world is dependent on parameters like demography, geography, climate, economic conditions, educational characteristics, ethno-cultural characteristics etc. Our aim is to give region-specific factors affecting population growth. We focus our study on two categories of countries:
+\newline
+
+\setlength{\parindent}{0ex}
+(a) Countries where population density is below the target value (75 per sq. Km) \newline
+(b) Countries where population density is above the target value 
+\newline
+
+If the countries in category (a) have a positive population growth or countries in category (b) have negative population growth, then we need to have some population control strategies. For this purpose, we considered population growth rate (in percent) and population density averaged over a decade (2005-2015) for each country to define a variable as our category variable as per following formula: 
+
+
+$$A = Average Population Growth Rate (\%)$$
+
+$$B = \frac{(Average Population Density-Target Value)}{Target Value}$$
+
+$$Population Control Requirement Index (PCRI) = A * B $$
+
+\begin{table} [H]
+\centering 
+\begin{tabular}{|c|c|c|c|} 
+\hline 
+A & B & PCRI & Requirement \\\hline 
+Decreasing (-) & Decreasing (-) & Positive & Increase population growth rate \\\hline 
+Decreasing (-) & Increasing (+) & Negative & - \\\hline 
+Increasing (+) & Decreasing (-) & Negative & - \\\hline 
+Increasing (-) & Increasing (+) & Positive & Decrease population growth rate \\\hline 
+\end{tabular} 
+\caption{\label{tab:widgets}Classes of PCRI.}
+\end{table} 
+
+If population density is lower than target value (75 per sq. Km) and population is decreasing, we need to find factors that can help in increasing the population. Similarly, if population density is greater than target value and population is increasing, we need to find factors that can help to curb the population growth. Also, higher the value of PCRI, more is the need to have population control policies as population density is farther from the target value.
+\newline
+
+Since population density of countries cannot be directly controlled, we developed a model on our entire data set to identify the factors affecting population growth rate in these countries. We use PCRI to identify countries that require population control policies and to provide more focused and directed recommendations. In conclusion, we hypothesize that population growth is a function of factors like demography, geography, climate, economic conditions, educational characteristics and ethno-cultural characteristics. To test our hypothesis, we have collected a total of 27 predictors in all categories. We want to use predictive modeling to test our hypothesis.
+\newline
+
+Population density is the measure of number of people per unit area or unit volume. Various studies estimate different ideal or optimum population densities. A world conference on transport research estimated the optimal density ranges from 20-40 residents per hectare, based on the criterion of transportation and municipal costs.  
+\newline
+
+Litman,T.[5] estimates the population density ranges seems to be 2,801 Inhabitants per sq. Km based on the criterion of paving and lighting sector dimensions, and to be 4,430 inhabitants per sq. Km based on the dimensions and sewerage and cleansing of residual waters.   
+\newline
+
+A study published in Journal of Economics [4] carries out a detailed physics based economic analysis and came to the conclude that the optimum population density should be 300 people per sq. Km. 
+\newline
+
+In this study the author assumes that all the wealth creation and resources come from the land. Earth has a population density of 6 per sq. Km, assuming world population to be 6 billion. The author then goes on to say that the closer to a country is to this number the more a country is natural resources based, for example Canada. If a country has a significantly higher population density then this it tends to have poverty, for example India. When a country has this number higher but still has a healthy GDP, it means that the country is importing the goods (stealing other’s hinterland) or is a service-based economy. If the population density is lower, such as Australia it means that the country can grow.   
+\newline
+
+The problem of finding an optimum population density is a complex and a multivariate problem, with the need to take diverse factors into account. Deviation from this optimum population density can in turn affect the variables and can serve as an important measure that can give important insights. 
+\newline
+\newpage
+
+\section{Data}
+
+We have merged about 11 files .csv files to generate our final input data frame. These files contain our important predictors as described below and were merged based on the unique country codes generated for each of these files. After removing the missing data, we focus our study on 143 countries which cover majority of the world population-wise as well as geographically. Our response variable is population growth rate of each country averaged over 10 years (2005-2015). In correspondence, our predictors are also averaged over the 10 years horizon. All our predictors are either percentages or per-capita values.
+The final set of variables that we choose and fit our model into are Birth Rate, Death Rate, Fertility Rate, Infant Mortality Rate, Life Expectancy at birth, Education levels, GDP per-capita, Employment by Industry, Unemployment Rate, CO2 emissions per capita, Fertile soil percentage, Proportion of desert land, Proportion of region with tropical climate, Proportion of coastal land, and Proportion of rugged terrain.
+\textbf{\emph{[See Appendix for details]}}
+\newline
+\newline
+Summary statistics is attached in Appendix
+
+\section{Exploratory Data Analysis}
+
+We have plotted the class variable for all the countries in our data set.
+
+\begin{figure}[H] 
+        \centering \includegraphics[width=0.89\columnwidth]{pcri.png}
+        \caption{\label{tab:widgets}Heat map based on PCRI} 
+\end{figure}
+
+Based on the value of PCRI, top 25 countries that need population control policies are: Monaco, Singapore, Bahrain, Maldives, Lebanon, Sint Maarten, Bangladesh, Palestine, Mayotte, Rwanda, Burundi, Comoros, Malta, Aruba, San Marino, Nauru, Qatar, India, Israel, Philippines, Haiti, Kuwait, Cayman Islands, Uganda and Pakistan. 
+\newline
+\newline
+Here we can see that countries with PCRI value greater than zero need to plan from population growth rate control. Also, if we see the African region near Sahara desert, it is green showing growth rate is already under control. Tropical countries like India, Nigeria have high value of PCRI which completely makes sense.
+\newline
+\newline
+Some interesting findings from exploratory data analysis are as follows:
+\newline
+\newline
+\setlength{\parindent}{0ex}
+(i) From figure 2 (correlation plot), it can be seen that birth rate and fertility rate are highly correlated with population growth rate. However, countries do not have any real control over these factors through policy making. Furthermore these factors may suppress the importance of other variables which are actionable. Hence we reject these variables from our models. 
+\begin{figure}[H] 
+        \centering \includegraphics[width=0.76\columnwidth]{corrplot.png}
+        \caption{\label{tab:widgets}Correlation plot of all variables} 
+\end{figure}
+
+(ii) From violin plot for percentage of people employed in agriculture, it can be seen that higher the number of people employed in agriculture higher the population growth rate. This can be attributed to the mindset in agrarian economies that more the members in the family more people can contribute to the farming. 
+\newline
+
+(iii) We see that the infant mortality rate is inversely proportional to population growth rate. One of the possible reasons could be that usually higher infant mortality rate is due to inadequate healthcare and the mother’s general health. Poorer and developing countries usually have higher population growth rate and weaker healthcare infrastructure.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{Agriculture.png}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{InfantMortality.png}
+\end{minipage}
+\end{figure}
+
+(iv) Violin plot of life expectancy is line with our intuition. More developed countries have better life expectancy and usually lower population growth rate compared to developing and poorer countries which have lower life expectancy and higher population growth rates. 
+\newline
+
+(v) Another interesting finding is negative correlation of population growth rate and secondary education. This seems to be to in line with our previous observation of high population growth rate in people with no education.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{LifeExp.png}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{SecEdu.png}
+\end{minipage}
+\caption{\label{tab:widgets}Violin plots of important variables}
+\end{figure}
+
+\newpage
+
+\section{Modeling}
+After conducting our exploratory data analysis, we proceed to fit our covariates and response variables using different models explored in the class. Both our predictor and response variables are continuous in nature. We divide the 143 observations that we have into training and testing data using a 80/20 split ratio. We then proceed to fit nine models, and then tune hyperparameters in each model using 5-fold cross-validation and then select the best hyperparameters to fit our models. We compare each model using RMSE values on test data and select Gradient Boosting as our final model. 
+
+\subsection{Linear Model}
+We fit the linear regression model on our finalized variables against our response variable of Population growth rate. We then find the RMSE value on training data to be \textbf{0.487} and on the test data to be \textbf{1.09}.
+
+\subsection{Lasso and Ridge Regression}
+We use the glmnet package in R and fit a lasso and ridge regression model on our training data. We also tune our hyperparameter lambda using 5-fold cross-validation on training data, and choose the optimum lambda corresponding to lowest RMSE value. The relationship of lambda vs RMSE value is shown in the graph below. The final model is fitted on training set using $lambda_{min}$ = 0.027 and $lambda_{min}$= 0.075 for ridge and lasso respectively. The RMSE values from the fitted values for ridge and lasso are are \textbf{0.518} and \textbf{0.525} on the training data, and \textbf{0.955} and \textbf{0.957} on the test data, respectively.  
+\newline
+
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{lambdalasso.png}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{lambdaridge.png}
+\end{minipage}
+\caption{\label{tab:widgets}Lambda tuning for lasso and ridge}
+\end{figure}
+
+\subsection{Generalized Additive Models (GAM)}
+
+We fit a GAM model and use spline function where the variable is non-linear. We find that the RMSE values for the fitted GAM model for training set is \textbf{0.228} and for test set is \textbf{0.868}. 
+
+
+\subsection{Bayesian Additive Regression Trees (BART)}
+
+Using the inbuilt bartMachineCV function and using 5-fold cross validation we tune our hyperparameters k, q , nu and m to find the least RMSE values for training and testing data. We vary k between (1,2,3) and check for 3 combinations of (q, nu) which are (0.75,10), (0.9,3), (0.9,3). Two values of m that are considered are 50 and 100. The optimal of values for k,q,nu and m are found to be \textbf{(3, 0.9, 3, 50)}  as evident from Figure 5 below.  
+
+\subsection{Multivariate Adaptive Regression Splines (MARS)}
+
+Using the earth package we find the optimum number of terms (including intercept) that remain after pruning. As evident from Figure 6 below the optimum number of terms for which we get lowest RMSE value is 15. The RMSE found in MARS for training data is \textbf{0.348} and for the test data is \textbf{0.86}.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{bartmachine.png}
+  \caption{\label{tab:widgets}Hyperparameter tuning for BART}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{mars.png}
+  \caption{\label{tab:widgets}Optimal number of terms for MARS}
+\end{minipage}
+\end{figure}
+
+\subsection{Random Forest}
+
+We use 5-fold cross validation to find the optimal number of predictors to be sampled at each splitting node (mtry) at which out-of-bag error is the least. The number of trees used are 500. As evident from Figure 7, the optimal value for \textbf{mtry = 23}. The RMSE value on training data is found to be \textbf{0.294} and on the test data to be \textbf{0.866}.
+
+\subsection{Support Vector Regression (SVR)}
+
+Using tune function the hyperparameters epsilon (dictates the size of the errors that we admit in the solution) and cost (dictates the margin classification).Using five fold cross validation we find epsilon and cost to be 0 and 2 respectively,that results in the lowest RMSE values. The RMSE value of the SVM model for training data is \textbf{0.42} and on the test data is \textbf{1.05}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{randomforest.png}
+  \caption{\label{tab:widgets}Tuning number of predictors for RF}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{svm.png}
+  \caption{\label{tab:widgets}Tuning hyperparameters for SVR}
+\end{minipage}
+\end{figure}
+
+
+
+\subsection{Gradient Boosting Method (GBM)}
+We use 5-fold cross-validation to tune the shrinkage parameter and maximum depth of each tree (interaction.depth). We vary shrinkage between (0.01, 0.05, 0.001) and interaction.depth between (1, 2, 3). The optimal value is found to be 0.01 and 3 for shrinkage and maximum depth respectively. The number of trees (n.trees) are varied from 0 to 5000. The best performance is found to be at \textbf{n.trees = 1500}. Figure 9 shows the performance of boosting on both training and test set as a function of number of trees. The RMSE value of the boosting model for training data is \textbf{0.26} and on the test data is \textbf{0.843}
+
+\begin{figure}[H] 
+        \centering \includegraphics[width=0.6\columnwidth]{Boosting.png}
+        \caption{\label{tab:widgets}Tuning for Boosting} 
+\end{figure}
+
+\subsection{Model Comparison}
+Figure 10 shows the RMSE comparison between all fitted models on training and testing datasets. As we can see gradient boosting provides the best RMSE value on test data. This model also has good interpretability. Hence we select this method as our final model. 
+
+\begin{figure}[H] 
+        \centering \includegraphics[width=0.9\columnwidth]{modelcomparison.png}
+        \caption{\label{tab:widgets}Comparison between all fitted models} 
+\end{figure}
+
+\section{Inferences}
+We computed the relative influence of each variable in the final fitted gbm model. Based on the plot (Figure 11), variables Death Rate, Percentage of uneducated people, Fertile soil percentage, Infant Mortality Rate seem to have most influence on the final model. Other variables influencing the model are in line with our initial exploratory data analysis.
+\newline
+
+Now to further understand the effect of these predictors, their individual marginal influence plots were studied (Figure 12). Looking at the marginal influence plot of "Death Rate" it can be concluded that increase in death rate is inversely proportional to the population growth rate. Hence, the countries requiring increase in population growth rate, need to work on controlling death rates i.e. enhancing safety of their citizens through various measures.
+\newline
+
+Also, if we look at our next important predictor i.e. Percentage of Uneducated People, it has a strong positive influence on population growth rate which again make sense as uneducated people might not think towards family planning and can have a large family size leading to population growth rate.
+
+\begin{figure}[H] 
+        \centering \includegraphics[width=0.6\columnwidth]{Variableimportance.png}
+        \caption{\label{tab:widgets}Variable Importance Plot for Boosting} 
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{deathrateinfluence.png}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{uneducatedinfluence.png}
+\end{minipage}
+\caption{\label{tab:widgets}Marginal effect plots}
+\end{figure}
+
+Effect of other top influencing predictors will be update in final report.
+\newline
+\newline
+Also, in final project we will be finding one major population growth rate influencing parameter for all top 25 countries having highest "PCRI" so as to suggest them a starting point for policy making to control the population growth rate.
+\newpage
+\section{References}
+[1] Nunn, and Puga. 2012. Ruggedness: The blessing of bad geography in Africa. \textit{Review of Economics and Statistics} 94 (1): 20-36. 
+\newline
+\newline
+[2] Kottek, Markus, Jürgen Grieser, Christoph Beck, Bruno Rudolf, and Franz Rubel. 2006. World map of the Köppen-Geiger climate classification updated. \textit{Meteorologische Zeitschrift} 15(3): 259-263. 
+\newline
+\newline
+[3] Riley, Shawn J., Stephen D. DeGloria, and Robert Elliot. 1999. A terrain ruggedness index that quantifies topographic heterogeneity. \textit{Intermountain Journal of Sciences} 5(1-4): 23-27. 
+\newline
+\newline
+[4] Cusack PTE (2017) Physical Economics and Optimum Population Density. \textit{J Glob Econ} 5: 244. doi:10.4172/2375-4389.1000244  
+\newline
+\newline
+[5] Litman, T. Determining Optimal Urban Expansion, Population and Vehicle Density, and Housing Types for Rapidly Growing Cities.\textit{In Proceedings of the World Conference on Transport Research}, Shanghai, China, 10–15 July 2016. 
+\newline
+\newline
+[6] Kelley, A. and R. Schmidt, (1995), Aggregate Population and Economic Growth Correlations: The Role of the Components of Demographic Change, \textit{Demography}, 32, 543-555 
+\newline
+\newline
+[7] D. D. Zhang, P. Brecke, H. F. Lee, Y. Q. He, J. Zhang, Global climate change, war, and population decline in recent human history. \textit{Proc. Natl. Acad. Sci. U.S.A.} 104, 19214–19219 (2007). doi: 10.1073/pnas.0703073104; pmid: 18048343 
+\newline
+
+
+%++++++++++++++++++++++++++++++++++++++++
+% References section will be created automatically 
+% with inclusion of "thebibliography" environment
+% as it shown below. See text starting with line
+% \begin{thebibliography}{99}
+% Note: with this approach it is YOUR responsibility to put them in order
+% of appearance.
+% 
+
+
+\newpage
+\section{Appendix}
+\begin{table} [H]
+\centering
+\begin{tabular}{|p{3cm}|p{8cm}|p{4cm}|} 
+\hline 
+Response & Description & Source \\\hline 
+Population Increase Rate & Indicates annual rate of increase of population in percentage & UN Data \newline 
+(http://data.un.org/) \\\hline 
+Population Density & Indicates the number of people living in per square km area & UN Data \newline 
+(http://data.un.org/) \\\hline 
+\end{tabular} 
+\caption{\label{tab:widgets}Details about response variables.}
+\end{table} 
+
+
+\begin{table} [H]
+\centering
+\begin{tabular}{|p{2cm}|p{5.5cm}|p{2cm}|p{5.5cm}|}
+\hline
+Predictors & Description & Source & Rationale \\\hline
+Birth Rate & Number of live births occurring during the year, per 1,000 population estimated at midyear & UN Data & A direct effect on the response variable \\\hline
+Death Rate & Number of deaths occurring during the year, per 1,000 population estimated at midyear & UN Data & A direct effect on the response variable \\\hline
+Fertility Rate & Total number of children that would be born to each woman if she were to live to the end of her child-bearing years & UN Data & Fertility rate gives a measure of the potential of population to bear children \\\hline
+Infant Mortality Rate & Number of deaths for both sexes per 1,000 live births of children under one year of age & UN Data & This should have an inverse relation to the response variables \\\hline
+Life Expectancy at birth & Indicates in years how long, on average, a newborn can expect to live, if current death rates do not change & UN Data & This is a more specific variable that will also be inversely proportional to the response variable \\\hline
+Education levels & 3 variables indicating number of students enrolled in primary, secondary, tertiary education levels in thousands respectively & UN Data & Studies have shown educating women is effective in controlling population. Education also gives opportunities to people to have greater mobility, thus influencing population \\\hline
+GDP per-capita & Indicates gross domestic product per-capita in US dollars & UN Data & Economic status of person would affect the ability to raise children. It can also have an adverse effect especially in developing countries \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table} [H]
+\centering
+\begin{tabular}{|p{2.2cm}|p{5.5cm}|p{1.8cm}|p{5.5cm}|}
+\hline
+Employment by industry & 3 variables indicating percentage of people employed in agriculture, industry and services respectively & UN Data & Income would be different from community-based businesses and agriculture based economies which require more manpower to operate hence affecting response variable   \\\hline
+Unemploy-ment Rate & Percentage of unemployed workers in the total labor force & UN Data & This might lead to higher population growth rate with an individual's an attempt to increase the number of earning hands, or it might lead to a decrease in population growth rate if one thinks unemployment doesn't allow them to afford raising children.   \\\hline
+CO2 emissions per capita & Indicates the carbon-dioxide emissions per capita in thousand metric tons & UN Data & This would have adverse effects on the health, which in turn might motivate people to move and can influence population density \\\hline
+Fertile soil percentage & Percentage of land surface area of each country that has fertile soil  & Nunn, and Puga (2012) & This will influence the GDP of the agriculture-based economies and the growth \\\hline
+Proportion of desert land & Percentage of land surface area of each country covered by sandy desert, dunes, rocky or lava flows & Nunn, and Puga (2012) & The response variables will be inversely proportional to this variable \\\hline
+Proportion of region with tropical climate & Percentage of the land surface area of each country that has any of the four Köppen-Geiger tropical climates as defined by Kottek et al. (2006) & Nunn, and Puga (2012) & People tend to prefer living in the tropical climate. In addition to population density the population growth also seems to be directly correlated to this \\\hline
+Proportion of coastal land & Percentage of the land surface area of each country that is within 100km of the nearest ice-free coast & Nunn, and Puga (2012) &  Coastal cities tend to have more temperate climates. This attracts people to move to the coastal regions \\\hline
+Proportion of rugged terrain & Percentage of a country's land area that is highly rugged & Nunn, and Puga (2012) & This would have an inverse relation to the population growth rate \\\hline
+\end{tabular}
+\caption{\label{tab:widgets}Details about predictor variables 
+Source for UN Data : \url{http://data.un.org/}}
+\end{table}
+
+\begin{figure}[H] 
+        \centering \includegraphics[width=0.95\columnwidth]{summary.png}
+        \caption{\label{tab:widgets}Summary statistics of input data}
+\end{figure}
+
+Overleaf Link: \url{https://www.overleaf.com/read/yvhmcmyrdktg}
+
+
+\end{document}
+
+
+
+
